@@ -1,6 +1,7 @@
 package com.example.notesapp.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
@@ -9,11 +10,13 @@ import com.example.notesapp.R;
 import com.example.notesapp.data.Note;
 import com.example.notesapp.data.Repo;
 import com.example.notesapp.data.inMemoryRepoImpl;
+import com.example.notesapp.recycler.NotesAdapter;
 
 public class NotesListActivity extends AppCompatActivity {
 
    private Repo repository = new inMemoryRepoImpl();
-   private RecyclerView list;
+   private RecyclerView recyclerView;
+   private NotesAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +25,12 @@ public class NotesListActivity extends AppCompatActivity {
 
         fillRepo();
 
-        list = findViewById(R.id.list);
+        adapter = new NotesAdapter();
+        adapter.setNotes(repository.getAll());
+
+        recyclerView = findViewById(R.id.rv_list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
     }
 
     private void fillRepo() {
