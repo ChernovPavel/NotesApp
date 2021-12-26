@@ -24,6 +24,6 @@
         android:id="@+id/edit_note_update"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/update_note" />
+        android:text="@string/save_note" />
 
 </LinearLayout>

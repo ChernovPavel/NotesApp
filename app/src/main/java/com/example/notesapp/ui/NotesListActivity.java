@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -28,7 +29,7 @@ public class NotesListActivity extends AppCompatActivity implements NotesAdapter
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notes_list);
 
-        fillRepo();
+        if (repository.getAll().size() == 0) fillRepo();
 
         adapter = new NotesAdapter();
         adapter.setNotes(repository.getAll());
@@ -72,8 +73,15 @@ public class NotesListActivity extends AppCompatActivity implements NotesAdapter
         return super.onCreateOptionsMenu(menu);
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.main_create:
+                Intent intent = new Intent(this, EditNoteActivity.class);
+                startActivity(intent);
+                return true;
+        }
         return super.onOptionsItemSelected(item);
 
     }

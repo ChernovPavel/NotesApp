@@ -20,6 +20,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NoteHolder> {
 
     public void setNotes(List<Note> notes) {
         this.notes = notes;
+        notifyDataSetChanged();
     }
 
     public interface onNoteClickListener {
