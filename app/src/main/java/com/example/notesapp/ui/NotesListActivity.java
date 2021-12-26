@@ -1,22 +1,27 @@
 package com.example.notesapp.ui;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.example.notesapp.R;
+import com.example.notesapp.data.Constants;
 import com.example.notesapp.data.Note;
 import com.example.notesapp.data.Repo;
-import com.example.notesapp.data.inMemoryRepoImpl;
+import com.example.notesapp.data.InMemoryRepoImpl;
 import com.example.notesapp.recycler.NotesAdapter;
 
-public class NotesListActivity extends AppCompatActivity {
+public class NotesListActivity extends AppCompatActivity implements NotesAdapter.onNoteClickListener {
 
-   private Repo repository = new inMemoryRepoImpl();
-   private RecyclerView recyclerView;
-   private NotesAdapter adapter;
+    private Repo repository = InMemoryRepoImpl.getInstance();
+    private RecyclerView recyclerView;
+    private NotesAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +32,8 @@ public class NotesListActivity extends AppCompatActivity {
 
         adapter = new NotesAdapter();
         adapter.setNotes(repository.getAll());
+
+        adapter.setOnNoteClickListener(this);
 
         recyclerView = findViewById(R.id.rv_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -50,5 +57,24 @@ public class NotesListActivity extends AppCompatActivity {
         repository.create(new Note("Title 14", "Description 14"));
         repository.create(new Note("Title 15", "Description 15"));
         repository.create(new Note("Title 16", "Description 16"));
+    }
+
+    @Override
+    public void onNoteClick(Note note) {
+        Intent intent = new Intent(this, EditNoteActivity.class);
+        intent.putExtra(Constants.NOTE, note);
+        startActivity(intent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        return super.onOptionsItemSelected(item);
+
     }
 }

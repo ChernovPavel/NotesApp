@@ -2,7 +2,9 @@ package com.example.notesapp.data;
 
 import android.content.Intent;
 
-public class Note {
+import java.io.Serializable;
+
+public class Note implements Serializable {
     private Integer id;
     private String title;
     private String description;
