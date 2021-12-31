@@ -79,9 +79,11 @@ public class NotesListFragment extends Fragment implements NotesAdapter.onNoteCl
 
     @Override
     public void onNoteClick(Note note) {
-        Intent intent = new Intent(getActivity(), EditNoteActivity.class);
-        intent.putExtra(Constants.NOTE, note);
-        startActivity(intent);
+        requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.fragment_container, EditNoteFragment.getInstance(note))
+                .addToBackStack(null)
+                .commit();
     }
 
     @Override
@@ -103,5 +105,4 @@ public class NotesListFragment extends Fragment implements NotesAdapter.onNoteCl
         return super.onOptionsItemSelected(item);
 
     }
-
 }

@@ -1,22 +1,10 @@
 package com.example.notesapp.ui;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.notesapp.R;
-import com.example.notesapp.data.Constants;
-import com.example.notesapp.data.Note;
-import com.example.notesapp.data.Repo;
-import com.example.notesapp.data.InMemoryRepoImpl;
-import com.example.notesapp.recycler.NotesAdapter;
 
 public class NotesListActivity extends AppCompatActivity {
 
