@@ -1,5 +1,6 @@
 package com.example.notesapp.ui;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +38,22 @@ public class EditNoteFragment extends Fragment {
         return fragment;
     }
 
+    interface Controller {
+        void saveButtonPressed();
+    }
+
+    private Controller controller;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        if (context instanceof Controller) {
+            this.controller = (Controller) context;
+        } else {
+            throw new IllegalStateException("activity must be implement Controller");
+        }
+        super.onAttach(context);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -61,6 +78,21 @@ public class EditNoteFragment extends Fragment {
         }
 
         saveNote.setOnClickListener(v -> {
+            if (note == null) {
+                int newNoteId = repository.create(new Note(title.getText().toString(), description.getText().toString()));
+                note = repository.read(newNoteId);
+            } else {
+                note.setTitle(title.getText().toString());
+                note.setDescription(description.getText().toString());
+                repository.update(note);
+            }
+
+            requireActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .remove(this)
+                    .commit();
+
+            controller.saveButtonPressed();
         });
     }
 }
