@@ -1,12 +1,10 @@
 package com.example.notesapp.ui;
 
 import android.os.Bundle;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.notesapp.R;
 
-public class NotesListActivity extends AppCompatActivity implements EditNoteFragment.Controller {
+public class MainActivity extends AppCompatActivity implements EditNoteFragment.Controller {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

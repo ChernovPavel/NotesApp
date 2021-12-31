@@ -17,7 +17,6 @@ import com.example.notesapp.data.InMemoryRepoImpl;
 import com.example.notesapp.data.Note;
 import com.example.notesapp.data.Repo;
 
-
 public class EditNoteFragment extends Fragment {
 
     private EditText title;

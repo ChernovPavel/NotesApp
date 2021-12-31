@@ -98,11 +98,15 @@ public class NotesListFragment extends Fragment implements NotesAdapter.onNoteCl
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.main_create:
-                Intent intent = new Intent(getActivity(), EditNoteActivity.class);
-                startActivity(intent);
+                requireActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.fragment_container, new EditNoteFragment())
+                        .addToBackStack(null)
+                        .commit();
+
+
                 return true;
         }
         return super.onOptionsItemSelected(item);
-
     }
 }
