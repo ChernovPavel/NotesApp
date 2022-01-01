@@ -1,33 +1,50 @@
 package com.example.notesapp.ui;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.example.notesapp.R;
 import com.example.notesapp.data.Constants;
+import com.example.notesapp.data.InMemoryRepoImpl;
 import com.example.notesapp.data.Note;
 import com.example.notesapp.data.Repo;
-import com.example.notesapp.data.InMemoryRepoImpl;
 import com.example.notesapp.recycler.NotesAdapter;
 
-public class NotesListActivity extends AppCompatActivity implements NotesAdapter.onNoteClickListener {
+public class NotesListFragment extends Fragment implements NotesAdapter.onNoteClickListener {
 
     private Repo repository = InMemoryRepoImpl.getInstance();
     private RecyclerView recyclerView;
     private NotesAdapter adapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_notes_list);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_notes_list, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         if (repository.getAll().size() == 0) fillRepo();
 
@@ -36,8 +53,8 @@ public class NotesListActivity extends AppCompatActivity implements NotesAdapter
 
         adapter.setOnNoteClickListener(this);
 
-        recyclerView = findViewById(R.id.rv_list);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView = view.findViewById(R.id.rv_list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setAdapter(adapter);
     }
 
@@ -62,15 +79,18 @@ public class NotesListActivity extends AppCompatActivity implements NotesAdapter
 
     @Override
     public void onNoteClick(Note note) {
-        Intent intent = new Intent(this, EditNoteActivity.class);
-        intent.putExtra(Constants.NOTE, note);
-        startActivity(intent);
+        requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.fragment_container, EditNoteFragment.getInstance(note))
+                .addToBackStack(null)
+                .commit();
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return super.onCreateOptionsMenu(menu);
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        requireActivity().getMenuInflater().inflate(R.menu.main, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -78,11 +98,15 @@ public class NotesListActivity extends AppCompatActivity implements NotesAdapter
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.main_create:
-                Intent intent = new Intent(this, EditNoteActivity.class);
-                startActivity(intent);
+                requireActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.fragment_container, new EditNoteFragment())
+                        .addToBackStack(null)
+                        .commit();
+
+
                 return true;
         }
         return super.onOptionsItemSelected(item);
-
     }
 }
