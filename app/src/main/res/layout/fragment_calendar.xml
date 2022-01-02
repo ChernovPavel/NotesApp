@@ -11,6 +11,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="@string/calendar_fragment"
-        android:textSize="42sp" />
+        android:textSize="@dimen/default_text" />
 
 </FrameLayout>
