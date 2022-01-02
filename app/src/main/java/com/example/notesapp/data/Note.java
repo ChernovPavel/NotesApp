@@ -1,23 +1,17 @@
 package com.example.notesapp.data;
 
-import android.content.Intent;
-
 import java.io.Serializable;
 
 public class Note implements Serializable {
     private Integer id;
     private String title;
     private String description;
+    private NoteImportance importance;
 
-    public Note(String title, String description) {
+    public Note(String title, String description, NoteImportance importance) {
         this.title = title;
         this.description = description;
-    }
-
-    public Note(Integer id, String title, String description) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
+        this.importance = importance;
     }
 
     public Integer getId() {
@@ -42,5 +36,19 @@ public class Note implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public NoteImportance getImportance() {
+        return importance;
+    }
+
+    public void setImportance(NoteImportance importance) {
+        this.importance = importance;
+    }
+
+    public enum NoteImportance {
+        LOW,
+        MEDIUM,
+        HIGH
     }
 }

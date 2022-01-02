@@ -1,15 +1,7 @@
 package com.example.notesapp.ui;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,8 +9,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.notesapp.R;
-import com.example.notesapp.data.Constants;
 import com.example.notesapp.data.InMemoryRepoImpl;
 import com.example.notesapp.data.Note;
 import com.example.notesapp.data.Repo;
@@ -26,7 +23,7 @@ import com.example.notesapp.recycler.NotesAdapter;
 
 public class NotesListFragment extends Fragment implements NotesAdapter.onNoteClickListener {
 
-    private Repo repository = InMemoryRepoImpl.getInstance();
+    private final Repo repository = InMemoryRepoImpl.getInstance();
     private RecyclerView recyclerView;
     private NotesAdapter adapter;
 
@@ -59,22 +56,22 @@ public class NotesListFragment extends Fragment implements NotesAdapter.onNoteCl
     }
 
     private void fillRepo() {
-        repository.create(new Note("Title 1", "Description 1"));
-        repository.create(new Note("Title 2", "Description 2"));
-        repository.create(new Note("Title 3", "Description 3"));
-        repository.create(new Note("Title 4", "Description 4"));
-        repository.create(new Note("Title 5", "Description 5"));
-        repository.create(new Note("Title 6", "Description 6"));
-        repository.create(new Note("Title 7", "Description 7"));
-        repository.create(new Note("Title 8", "Description 8"));
-        repository.create(new Note("Title 9", "Description 9"));
-        repository.create(new Note("Title 10", "Description 10"));
-        repository.create(new Note("Title 11", "Description 11"));
-        repository.create(new Note("Title 12", "Description 12"));
-        repository.create(new Note("Title 13", "Description 13"));
-        repository.create(new Note("Title 14", "Description 14"));
-        repository.create(new Note("Title 15", "Description 15"));
-        repository.create(new Note("Title 16", "Description 16"));
+        repository.create(new Note("Title 1", "Description 1", Note.NoteImportance.LOW));
+        repository.create(new Note("Title 2", "Description 2", Note.NoteImportance.HIGH));
+        repository.create(new Note("Title 3", "Description 3", Note.NoteImportance.MEDIUM));
+        repository.create(new Note("Title 4", "Description 4", Note.NoteImportance.HIGH));
+        repository.create(new Note("Title 5", "Description 5", Note.NoteImportance.MEDIUM));
+        repository.create(new Note("Title 6", "Description 6", Note.NoteImportance.LOW));
+        repository.create(new Note("Title 7", "Description 7", Note.NoteImportance.HIGH));
+        repository.create(new Note("Title 8", "Description 8", Note.NoteImportance.MEDIUM));
+        repository.create(new Note("Title 9", "Description 9", Note.NoteImportance.MEDIUM));
+        repository.create(new Note("Title 10", "Description 10", Note.NoteImportance.MEDIUM));
+        repository.create(new Note("Title 11", "Description 11", Note.NoteImportance.HIGH));
+        repository.create(new Note("Title 12", "Description 12", Note.NoteImportance.HIGH));
+        repository.create(new Note("Title 13", "Description 13", Note.NoteImportance.LOW));
+        repository.create(new Note("Title 14", "Description 14", Note.NoteImportance.MEDIUM));
+        repository.create(new Note("Title 15", "Description 15", Note.NoteImportance.LOW));
+        repository.create(new Note("Title 16", "Description 16", Note.NoteImportance.MEDIUM));
     }
 
     @Override
@@ -103,8 +100,6 @@ public class NotesListFragment extends Fragment implements NotesAdapter.onNoteCl
                         .add(R.id.fragment_container, new EditNoteFragment())
                         .addToBackStack(null)
                         .commit();
-
-
                 return true;
         }
         return super.onOptionsItemSelected(item);
