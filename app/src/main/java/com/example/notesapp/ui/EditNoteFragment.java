@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,13 +21,17 @@ import com.example.notesapp.data.InMemoryRepoImpl;
 import com.example.notesapp.data.Note;
 import com.example.notesapp.data.Repo;
 
+import java.util.Date;
+
 public class EditNoteFragment extends Fragment {
 
     private EditText title;
     private EditText description;
+    private Button selectDate;
     private Button saveNote;
     private Spinner spinner;
     private Integer choiceImportance;
+    private TextView date;
 
     private int id = -1;
     private Note note = null;
@@ -70,8 +75,10 @@ public class EditNoteFragment extends Fragment {
 
         title = view.findViewById(R.id.edit_note_title);
         description = view.findViewById(R.id.edit_note_description);
+        selectDate = view.findViewById(R.id.fragment_edit_note_select_data_btn);
         saveNote = view.findViewById(R.id.edit_note_update);
         spinner = view.findViewById(R.id.fragment_edit_note_spinner);
+        date = view.findViewById(R.id.date_text);
 
         ArrayAdapter<?> adapter = ArrayAdapter.createFromResource(requireContext(), R.array.notes_importance, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -92,7 +99,8 @@ public class EditNoteFragment extends Fragment {
                         .create(new Note(
                                         title.getText().toString(),
                                         description.getText().toString(),
-                                        Note.NoteImportance.values()[choiceImportance]
+                                        Note.NoteImportance.values()[choiceImportance],
+                                        new Date()
                                 )
                         );
                 note = repository.read(newNoteId);
@@ -120,6 +128,17 @@ public class EditNoteFragment extends Fragment {
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
+            }
+        });
+
+        selectDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getChildFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.date_picker_fragment, new DatePickerFragment())
+                        .addToBackStack(null)
+                        .commit();
             }
         });
     }
