@@ -1,81 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/edit_note_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/title_text_size"
-        android:inputType="text"
-        tools:text="Title" />
-
-    <EditText
-        android:id="@+id/edit_note_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:lines="5"
-        android:inputType="text"
-        android:textSize="@dimen/default_text_size"
-        tools:text="Description" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/default_margin"
-        android:layout_marginBottom="@dimen/default_margin"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/note_importance"
-            android:textColor="@color/black"
-            android:textSize="@dimen/default_text_size" />
-
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/fragment_edit_note_spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:entries="@array/notes_importance"
-            android:spinnerMode="dialog" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/fragment_edit_note_select_data_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/select_date_btn" />
-
-        <TextView
-            android:id="@+id/date_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="20dp"
-            android:textSize="@dimen/title_text_size"
-            tools:text="23.12.2021" />
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/edit_note_update"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/save_note" />
-
-    <FrameLayout
-        android:id="@+id/date_picker_fragment"
+    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="bottom" />
+        android:background="@color/white"
+        android:orientation="vertical">
 
-</LinearLayout>
+        <EditText
+            android:id="@+id/edit_note_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:textSize="@dimen/title_text_size"
+            tools:text="Title" />
+
+        <EditText
+            android:id="@+id/edit_note_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:lines="5"
+            android:textSize="@dimen/default_text_size"
+            tools:text="Description" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_margin"
+            android:layout_marginBottom="@dimen/default_margin"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/note_importance"
+                android:textColor="@color/black"
+                android:textSize="@dimen/default_text_size" />
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/fragment_edit_note_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:entries="@array/notes_importance"
+                android:spinnerMode="dialog" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/fragment_edit_note_select_data_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/select_date_btn" />
+
+            <TextView
+                android:id="@+id/date_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="20dp"
+                android:textSize="@dimen/title_text_size"
+                tools:text="23.12.2021" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/edit_note_update"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/save_note" />
+
+        <FrameLayout
+            android:id="@+id/date_picker_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom" />
+
+    </LinearLayout>
+
+</ScrollView>
