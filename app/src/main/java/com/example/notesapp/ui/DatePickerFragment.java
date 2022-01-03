@@ -25,11 +25,6 @@ public class DatePickerFragment extends Fragment {
     private DatePicker datePicker;
     private Button confirmDate;
     private String date;
-
-    interface OnConfirmDateBtnListener {
-        void confirmDateBtnPressed(String date);
-    }
-
     private OnConfirmDateBtnListener listener;
 
     public void onAttachToParentFragment(Fragment fragment) {
@@ -66,12 +61,13 @@ public class DatePickerFragment extends Fragment {
         datePicker.setOnDateChangedListener((datePicker, year, month, dayOfMonth) ->
                 date = String.format(Locale.ENGLISH, "%d.%d.%d", dayOfMonth, month + 1, year));
 
-        confirmDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getParentFragmentManager().popBackStack();
-                listener.confirmDateBtnPressed(date);
-            }
+        confirmDate.setOnClickListener(view1 -> {
+            getParentFragmentManager().popBackStack();
+            listener.confirmDateBtnPressed(date);
         });
+    }
+
+    interface OnConfirmDateBtnListener {
+        void confirmDateBtnPressed(String date);
     }
 }

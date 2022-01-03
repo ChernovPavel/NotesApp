@@ -6,6 +6,12 @@ import java.util.List;
 public class InMemoryRepoImpl implements Repo {
 
     private static InMemoryRepoImpl repo;
+    private final ArrayList<Note> notes = new ArrayList<>();
+    private int counter = 0;
+
+    private InMemoryRepoImpl() {
+
+    }
 
     public static Repo getInstance() {
         if (repo == null) {
@@ -13,14 +19,6 @@ public class InMemoryRepoImpl implements Repo {
         }
         return repo;
     }
-
-
-    private InMemoryRepoImpl() {
-
-    }
-
-    private ArrayList<Note> notes = new ArrayList<>();
-    private int counter = 0;
 
     @Override
     public int create(Note note) {

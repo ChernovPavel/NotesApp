@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment;
 
 import com.example.notesapp.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity implements EditNoteFragment.Controller {
 
@@ -21,9 +20,9 @@ public class MainActivity extends AppCompatActivity implements EditNoteFragment.
         setContentView(R.layout.activity_notes_list);
 
         bottomNavigationView = findViewById(R.id.main_bottom_navigation);
-        bottomNavigationView.setOnItemSelectedListener((NavigationBarView.OnItemSelectedListener) item -> {
+        bottomNavigationView.setOnItemSelectedListener(item -> {
 
-            Fragment fragment = null;
+            Fragment fragment;
 
             switch (item.getItemId()) {
                 case R.id.bottom_menu_settings:

@@ -78,7 +78,7 @@ public class NotesListFragment extends Fragment implements NotesAdapter.onNoteCl
     public void onNoteClick(Note note) {
         requireActivity().getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.fragment_container, EditNoteFragment.getInstance(note))
+                .replace(R.id.fragment_container, EditNoteFragment.getInstance(note))
                 .addToBackStack(null)
                 .commit();
     }
@@ -97,7 +97,7 @@ public class NotesListFragment extends Fragment implements NotesAdapter.onNoteCl
             case R.id.main_create:
                 requireActivity().getSupportFragmentManager()
                         .beginTransaction()
-                        .add(R.id.fragment_container, new EditNoteFragment())
+                        .replace(R.id.fragment_container, new EditNoteFragment())
                         .addToBackStack(null)
                         .commit();
                 return true;

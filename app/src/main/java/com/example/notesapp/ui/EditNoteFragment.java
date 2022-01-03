@@ -23,6 +23,8 @@ import com.example.notesapp.data.Repo;
 
 public class EditNoteFragment extends Fragment implements DatePickerFragment.OnConfirmDateBtnListener {
 
+    public static final String NOTE = "NOTE";
+    Repo repository = InMemoryRepoImpl.getInstance();
     private EditText title;
     private EditText description;
     private Button selectDate;
@@ -30,12 +32,9 @@ public class EditNoteFragment extends Fragment implements DatePickerFragment.OnC
     private Spinner spinner;
     private Integer choiceImportance;
     private TextView tvDate;
-
     private int id = -1;
     private Note note = null;
-    Repo repository = InMemoryRepoImpl.getInstance();
-
-    public static final String NOTE = "NOTE";
+    private Controller controller;
 
     public static EditNoteFragment getInstance(Note note) {
         EditNoteFragment fragment = new EditNoteFragment();
@@ -49,12 +48,6 @@ public class EditNoteFragment extends Fragment implements DatePickerFragment.OnC
     public void confirmDateBtnPressed(String date) {
         tvDate.setText(date);
     }
-
-    interface Controller {
-        void saveButtonPressed();
-    }
-
-    private Controller controller;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -141,5 +134,9 @@ public class EditNoteFragment extends Fragment implements DatePickerFragment.OnC
                 .replace(R.id.date_picker_fragment, new DatePickerFragment())
                 .addToBackStack(null)
                 .commit());
+    }
+
+    interface Controller {
+        void saveButtonPressed();
     }
 }

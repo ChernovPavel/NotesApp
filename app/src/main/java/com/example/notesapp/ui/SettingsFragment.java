@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment;
 
 import com.example.notesapp.R;
 
-
 public class SettingsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
