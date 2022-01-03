@@ -7,11 +7,13 @@ public class Note implements Serializable {
     private String title;
     private String description;
     private NoteImportance importance;
+    private String date;
 
-    public Note(String title, String description, NoteImportance importance) {
+    public Note(String title, String description, NoteImportance importance, String date) {
         this.title = title;
         this.description = description;
         this.importance = importance;
+        this.date = date;
     }
 
     public Integer getId() {
@@ -44,6 +46,14 @@ public class Note implements Serializable {
 
     public void setImportance(NoteImportance importance) {
         this.importance = importance;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public enum NoteImportance {

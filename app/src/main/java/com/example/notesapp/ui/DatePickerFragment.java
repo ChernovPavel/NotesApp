@@ -26,6 +26,28 @@ public class DatePickerFragment extends Fragment {
     private Button confirmDate;
     private String date;
 
+    interface OnConfirmDateBtnListener {
+        void confirmDateBtnPressed(String date);
+    }
+
+    private OnConfirmDateBtnListener listener;
+
+    public void onAttachToParentFragment(Fragment fragment) {
+        try {
+            listener = (OnConfirmDateBtnListener) fragment;
+
+        } catch (ClassCastException e) {
+            throw new ClassCastException(
+                    fragment.toString() + " must implement OnConfirmDateBtnListener");
+        }
+    }
+
+    @Override
+    public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        onAttachToParentFragment(getParentFragment());
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -39,16 +61,16 @@ public class DatePickerFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         datePicker = view.findViewById(R.id.date_picker);
         confirmDate = view.findViewById(R.id.confirm_date);
-
-        date = new SimpleDateFormat("d/M/yyyy").format(Calendar.getInstance().getTime());
+        date = new SimpleDateFormat("d.M.yyyy").format(Calendar.getInstance().getTime());
 
         datePicker.setOnDateChangedListener((datePicker, year, month, dayOfMonth) ->
-                date = String.format(Locale.ENGLISH, "%d/%d/%d", dayOfMonth, month + 1, year));
+                date = String.format(Locale.ENGLISH, "%d.%d.%d", dayOfMonth, month + 1, year));
 
         confirmDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                getParentFragmentManager().popBackStack();
+                listener.confirmDateBtnPressed(date);
             }
         });
     }

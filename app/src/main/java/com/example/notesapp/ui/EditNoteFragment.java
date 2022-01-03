@@ -21,9 +21,7 @@ import com.example.notesapp.data.InMemoryRepoImpl;
 import com.example.notesapp.data.Note;
 import com.example.notesapp.data.Repo;
 
-import java.util.Date;
-
-public class EditNoteFragment extends Fragment {
+public class EditNoteFragment extends Fragment implements DatePickerFragment.OnConfirmDateBtnListener {
 
     private EditText title;
     private EditText description;
@@ -31,7 +29,7 @@ public class EditNoteFragment extends Fragment {
     private Button saveNote;
     private Spinner spinner;
     private Integer choiceImportance;
-    private TextView date;
+    private TextView tvDate;
 
     private int id = -1;
     private Note note = null;
@@ -45,6 +43,11 @@ public class EditNoteFragment extends Fragment {
         args.putSerializable(NOTE, note);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void confirmDateBtnPressed(String date) {
+        tvDate.setText(date);
     }
 
     interface Controller {
@@ -78,7 +81,7 @@ public class EditNoteFragment extends Fragment {
         selectDate = view.findViewById(R.id.fragment_edit_note_select_data_btn);
         saveNote = view.findViewById(R.id.edit_note_update);
         spinner = view.findViewById(R.id.fragment_edit_note_spinner);
-        date = view.findViewById(R.id.date_text);
+        tvDate = view.findViewById(R.id.date_text);
 
         ArrayAdapter<?> adapter = ArrayAdapter.createFromResource(requireContext(), R.array.notes_importance, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -91,6 +94,7 @@ public class EditNoteFragment extends Fragment {
             title.setText(note.getTitle());
             description.setText(note.getDescription());
             spinner.setSelection(note.getImportance().ordinal());
+            tvDate.setText(note.getDate());
         }
 
         saveNote.setOnClickListener(v -> {
@@ -100,7 +104,7 @@ public class EditNoteFragment extends Fragment {
                                         title.getText().toString(),
                                         description.getText().toString(),
                                         Note.NoteImportance.values()[choiceImportance],
-                                        new Date()
+                                tvDate.getText().toString()
                                 )
                         );
                 note = repository.read(newNoteId);
@@ -108,6 +112,7 @@ public class EditNoteFragment extends Fragment {
                 note.setTitle(title.getText().toString());
                 note.setDescription(description.getText().toString());
                 note.setImportance(Note.NoteImportance.values()[choiceImportance]);
+                note.setDate(tvDate.getText().toString());
                 repository.update(note);
             }
 
@@ -131,15 +136,10 @@ public class EditNoteFragment extends Fragment {
             }
         });
 
-        selectDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getChildFragmentManager()
-                        .beginTransaction()
-                        .add(R.id.date_picker_fragment, new DatePickerFragment())
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
+        selectDate.setOnClickListener(v -> getChildFragmentManager()
+                .beginTransaction()
+                .replace(R.id.date_picker_fragment, new DatePickerFragment())
+                .addToBackStack(null)
+                .commit());
     }
 }

@@ -56,22 +56,22 @@ public class NotesListFragment extends Fragment implements NotesAdapter.onNoteCl
     }
 
     private void fillRepo() {
-        repository.create(new Note("Title 1", "Description 1", Note.NoteImportance.LOW));
-        repository.create(new Note("Title 2", "Description 2", Note.NoteImportance.HIGH));
-        repository.create(new Note("Title 3", "Description 3", Note.NoteImportance.MEDIUM));
-        repository.create(new Note("Title 4", "Description 4", Note.NoteImportance.HIGH));
-        repository.create(new Note("Title 5", "Description 5", Note.NoteImportance.MEDIUM));
-        repository.create(new Note("Title 6", "Description 6", Note.NoteImportance.LOW));
-        repository.create(new Note("Title 7", "Description 7", Note.NoteImportance.HIGH));
-        repository.create(new Note("Title 8", "Description 8", Note.NoteImportance.MEDIUM));
-        repository.create(new Note("Title 9", "Description 9", Note.NoteImportance.MEDIUM));
-        repository.create(new Note("Title 10", "Description 10", Note.NoteImportance.MEDIUM));
-        repository.create(new Note("Title 11", "Description 11", Note.NoteImportance.HIGH));
-        repository.create(new Note("Title 12", "Description 12", Note.NoteImportance.HIGH));
-        repository.create(new Note("Title 13", "Description 13", Note.NoteImportance.LOW));
-        repository.create(new Note("Title 14", "Description 14", Note.NoteImportance.MEDIUM));
-        repository.create(new Note("Title 15", "Description 15", Note.NoteImportance.LOW));
-        repository.create(new Note("Title 16", "Description 16", Note.NoteImportance.MEDIUM));
+        repository.create(new Note("Title 1", "Description 1", Note.NoteImportance.LOW, "30.2.2019"));
+        repository.create(new Note("Title 2", "Description 2", Note.NoteImportance.HIGH, "15.5.2022"));
+        repository.create(new Note("Title 3", "Description 3", Note.NoteImportance.MEDIUM, "2.11.2017"));
+        repository.create(new Note("Title 4", "Description 4", Note.NoteImportance.HIGH, "14.2.2015"));
+        repository.create(new Note("Title 5", "Description 5", Note.NoteImportance.MEDIUM, "30.2.2019"));
+        repository.create(new Note("Title 6", "Description 6", Note.NoteImportance.LOW, "15.2.2012"));
+        repository.create(new Note("Title 7", "Description 7", Note.NoteImportance.HIGH, "16.12.2019"));
+        repository.create(new Note("Title 8", "Description 8", Note.NoteImportance.MEDIUM, "30.2.2019"));
+        repository.create(new Note("Title 9", "Description 9", Note.NoteImportance.MEDIUM, "30.11.2000"));
+        repository.create(new Note("Title 10", "Description 10", Note.NoteImportance.MEDIUM, "30.2.2019"));
+        repository.create(new Note("Title 11", "Description 11", Note.NoteImportance.HIGH, "23.1.2011"));
+        repository.create(new Note("Title 12", "Description 12", Note.NoteImportance.HIGH, "6.2.2019"));
+        repository.create(new Note("Title 13", "Description 13", Note.NoteImportance.LOW, "9.4.2019"));
+        repository.create(new Note("Title 14", "Description 14", Note.NoteImportance.MEDIUM, "8.2.2012"));
+        repository.create(new Note("Title 15", "Description 15", Note.NoteImportance.LOW, "30.6.2019"));
+        repository.create(new Note("Title 16", "Description 16", Note.NoteImportance.MEDIUM, "30.2.2019"));
     }
 
     @Override
