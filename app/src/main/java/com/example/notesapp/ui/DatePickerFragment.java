@@ -25,11 +25,11 @@ public class DatePickerFragment extends Fragment {
     private DatePicker datePicker;
     private Button confirmDate;
     private String date;
-    private OnConfirmDateBtnListener listener;
+    private OnConfirmDateBtnClickListener listener;
 
     public void onAttachToParentFragment(Fragment fragment) {
         try {
-            listener = (OnConfirmDateBtnListener) fragment;
+            listener = (OnConfirmDateBtnClickListener) fragment;
 
         } catch (ClassCastException e) {
             throw new ClassCastException(
@@ -67,7 +67,7 @@ public class DatePickerFragment extends Fragment {
         });
     }
 
-    interface OnConfirmDateBtnListener {
+    interface OnConfirmDateBtnClickListener {
         void confirmDateBtnPressed(String date);
     }
 }

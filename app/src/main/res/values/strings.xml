@@ -8,6 +8,8 @@
     <string name="settings_fragment">Settings fragment</string>
     <string name="calendar_fragment">Calendar fragment</string>
     <string name="note_importance">Важность:</string>
+    <string name="confirm_date_btn">Подтвердить дату</string>
+    <string name="select_date_btn">Укажите дату</string>
 
     <string-array name="notes_importance">
         <item>Высокая</item>

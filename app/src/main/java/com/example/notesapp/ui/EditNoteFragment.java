@@ -21,7 +21,7 @@ import com.example.notesapp.data.InMemoryRepoImpl;
 import com.example.notesapp.data.Note;
 import com.example.notesapp.data.Repo;
 
-public class EditNoteFragment extends Fragment implements DatePickerFragment.OnConfirmDateBtnListener {
+public class EditNoteFragment extends Fragment implements DatePickerFragment.OnConfirmDateBtnClickListener {
 
     public static final String NOTE = "NOTE";
     Repo repository = InMemoryRepoImpl.getInstance();

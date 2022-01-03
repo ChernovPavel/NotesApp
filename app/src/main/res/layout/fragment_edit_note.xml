@@ -10,7 +10,8 @@
         android:id="@+id/edit_note_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
+        android:textSize="@dimen/title_text_size"
+        android:inputType="text"
         tools:text="Title" />
 
     <EditText
@@ -18,14 +19,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:lines="5"
-        android:textSize="20sp"
+        android:inputType="text"
+        android:textSize="@dimen/default_text_size"
         tools:text="Description" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginBottom="@dimen/default_margin"
         android:orientation="horizontal">
 
         <TextView
@@ -33,7 +35,7 @@
             android:layout_height="wrap_content"
             android:text="@string/note_importance"
             android:textColor="@color/black"
-            android:textSize="20sp" />
+            android:textSize="@dimen/default_text_size" />
 
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/fragment_edit_note_spinner"
@@ -52,7 +54,7 @@
             android:id="@+id/fragment_edit_note_select_data_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Укажите дату" />
+            android:text="@string/select_date_btn" />
 
         <TextView
             android:id="@+id/date_text"
@@ -60,7 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="20dp"
-            android:textSize="26sp"
+            android:textSize="@dimen/title_text_size"
             tools:text="23.12.2021" />
     </LinearLayout>
 
