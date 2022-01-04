@@ -15,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.notesapp.R;
 import com.example.notesapp.data.InMemoryRepoImpl;
@@ -91,6 +92,7 @@ public class EditNoteFragment extends Fragment implements DatePickerFragment.OnC
         }
 
         saveNote.setOnClickListener(v -> {
+            //если новая заметка то по клику создавать новую, если меняем существующую, то апдейтим старую
             if (note == null) {
                 int newNoteId = repository
                         .create(new Note(
@@ -129,11 +131,22 @@ public class EditNoteFragment extends Fragment implements DatePickerFragment.OnC
             }
         });
 
-        selectDate.setOnClickListener(v -> getChildFragmentManager()
-                .beginTransaction()
-                .replace(R.id.date_picker_fragment, new DatePickerFragment())
-                .addToBackStack(null)
-                .commit());
+        selectDate.setOnClickListener(v -> {
+            //проверка, чтобы открывать только один nested фрагмент
+
+            for (Fragment f : requireActivity().getSupportFragmentManager().getFragments()) {
+                if (f.isVisible()) {
+                    FragmentManager childFm = f.getChildFragmentManager();
+                    if (childFm.getBackStackEntryCount() == 0) {
+                        getChildFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.date_picker_fragment, new DatePickerFragment())
+                                .addToBackStack(null)
+                                .commit();
+                    }
+                }
+            }
+        });
     }
 
     interface Controller {
