@@ -1,10 +1,12 @@
 package com.example.notesapp.ui;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -43,6 +45,14 @@ public class EditNoteFragment extends Fragment implements DatePickerFragment.OnC
         args.putSerializable(NOTE, note);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    public static void hideSoftKeyboard(Activity activity) {
+        if (activity.getCurrentFocus() == null) {
+            return;
+        }
+        InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
     }
 
     @Override
@@ -146,6 +156,7 @@ public class EditNoteFragment extends Fragment implements DatePickerFragment.OnC
                     }
                 }
             }
+            hideSoftKeyboard(requireActivity());
         });
     }
 
