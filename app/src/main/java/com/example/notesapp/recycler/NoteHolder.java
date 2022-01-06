@@ -11,8 +11,8 @@ import com.example.notesapp.data.Note;
 
 public class NoteHolder extends RecyclerView.ViewHolder {
 
-    private TextView title;
-    private TextView description;
+    private final TextView title;
+    private final TextView description;
     private Note note;
 
     public NoteHolder(@NonNull View itemView, NotesAdapter.onNoteClickListener listener) {

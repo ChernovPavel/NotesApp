@@ -17,17 +17,12 @@ import java.util.List;
 public class NotesAdapter extends RecyclerView.Adapter<NoteHolder> {
 
     private List<Note> notes = new ArrayList<>();
+    private onNoteClickListener listener;
 
     public void setNotes(List<Note> notes) {
         this.notes = notes;
         notifyDataSetChanged();
     }
-
-    public interface onNoteClickListener {
-        void onNoteClick(Note note);
-    }
-
-    private onNoteClickListener listener;
 
     public void setOnNoteClickListener(onNoteClickListener listener) {
         this.listener = listener;
@@ -50,5 +45,9 @@ public class NotesAdapter extends RecyclerView.Adapter<NoteHolder> {
     @Override
     public int getItemCount() {
         return notes.size();
+    }
+
+    public interface onNoteClickListener {
+        void onNoteClick(Note note);
     }
 }

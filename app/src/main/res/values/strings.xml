@@ -2,4 +2,18 @@
     <string name="app_name">NotesApp</string>
     <string name="save_note">Save note</string>
     <string name="add_note">Create</string>
+    <string name="bottom_menu_notes">List</string>
+    <string name="bottom_menu_calendar">Calendar</string>
+    <string name="bottom_menu_settings">Settings</string>
+    <string name="settings_fragment">Settings fragment</string>
+    <string name="calendar_fragment">Calendar fragment</string>
+    <string name="note_importance">Важность:</string>
+    <string name="confirm_date_btn">Подтвердить дату</string>
+    <string name="select_date_btn">Укажите дату</string>
+
+    <string-array name="notes_importance">
+        <item>Высокая</item>
+        <item>Средняя</item>
+        <item>Низкая</item>
+    </string-array>
 </resources>
