@@ -13,6 +13,10 @@ public class MainActivity extends AppCompatActivity implements EditNoteFragment.
 
     private BottomNavigationView bottomNavigationView;
 
+    public BottomNavigationView getNavBar() {
+        return bottomNavigationView;
+    }
+
     @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {

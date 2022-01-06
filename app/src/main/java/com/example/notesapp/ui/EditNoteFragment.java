@@ -71,8 +71,17 @@ public class EditNoteFragment extends Fragment implements DatePickerFragment.OnC
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public void onStop() {
+        ((MainActivity) requireActivity()).getNavBar().setVisibility(View.VISIBLE);
+        super.onStop();
+    }
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if (getActivity() != null && getActivity() instanceof MainActivity) {
+            ((MainActivity) requireActivity()).getNavBar().setVisibility(View.GONE);
+        }
         return inflater.inflate(R.layout.fragment_edit_note, container, false);
     }
 
