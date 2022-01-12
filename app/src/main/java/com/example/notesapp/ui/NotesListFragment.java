@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,6 +21,7 @@ import com.example.notesapp.data.InMemoryRepoImpl;
 import com.example.notesapp.data.Note;
 import com.example.notesapp.data.PopupMenuItemClickListener;
 import com.example.notesapp.data.Repo;
+import com.example.notesapp.recycler.NoteHolder;
 import com.example.notesapp.recycler.NotesAdapter;
 
 public class NotesListFragment extends Fragment implements NotesAdapter.onNoteClickListener, PopupMenuItemClickListener {
@@ -55,6 +57,29 @@ public class NotesListFragment extends Fragment implements NotesAdapter.onNoteCl
         recyclerView = view.findViewById(R.id.rv_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setAdapter(adapter);
+
+        ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.Callback() {
+            @Override
+            public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+                int swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
+                return makeMovementFlags(0, swipeFlags);
+            }
+
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getAdapterPosition();
+                NoteHolder holder = (NoteHolder) viewHolder;
+                Note note = holder.getNote();
+                repository.delete(note.getId());
+                adapter.delete(repository.getAll(), position);
+            }
+        });
+        helper.attachToRecyclerView(recyclerView);
     }
 
     private void fillRepo() {

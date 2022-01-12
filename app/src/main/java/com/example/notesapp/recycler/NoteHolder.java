@@ -61,4 +61,8 @@ public class NoteHolder extends RecyclerView.ViewHolder implements PopupMenu.OnM
         }
 
     }
+
+    public Note getNote() {
+        return note;
+    }
 }
