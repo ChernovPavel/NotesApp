@@ -18,10 +18,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.notesapp.R;
 import com.example.notesapp.data.InMemoryRepoImpl;
 import com.example.notesapp.data.Note;
+import com.example.notesapp.data.PopupMenuItemClickListener;
 import com.example.notesapp.data.Repo;
 import com.example.notesapp.recycler.NotesAdapter;
 
-public class NotesListFragment extends Fragment implements NotesAdapter.onNoteClickListener {
+public class NotesListFragment extends Fragment implements NotesAdapter.onNoteClickListener, PopupMenuItemClickListener {
 
     private final Repo repository = InMemoryRepoImpl.getInstance();
     private RecyclerView recyclerView;
@@ -49,6 +50,7 @@ public class NotesListFragment extends Fragment implements NotesAdapter.onNoteCl
         adapter.setNotes(repository.getAll());
 
         adapter.setOnNoteClickListener(this);
+        adapter.setPopupMenuItemClickListener(this);
 
         recyclerView = view.findViewById(R.id.rv_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
@@ -103,5 +105,14 @@ public class NotesListFragment extends Fragment implements NotesAdapter.onNoteCl
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void click(int command, Note note, int position) {
+        switch (command) {
+            case R.id.context_delete:
+                repository.delete(note.getId());
+                adapter.delete(repository.getAll(), position);
+        }
     }
 }

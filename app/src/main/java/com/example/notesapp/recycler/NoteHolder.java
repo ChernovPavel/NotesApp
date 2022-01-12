@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.notesapp.R;
 import com.example.notesapp.data.Note;
+import com.example.notesapp.data.PopupMenuItemClickListener;
 
 public class NoteHolder extends RecyclerView.ViewHolder implements PopupMenu.OnMenuItemClickListener {
 
@@ -19,8 +20,9 @@ public class NoteHolder extends RecyclerView.ViewHolder implements PopupMenu.OnM
     private ImageView itemMenu;
     private Note note;
     private PopupMenu popupMenu;
+    private PopupMenuItemClickListener popupListener;
 
-    public NoteHolder(@NonNull View itemView, NotesAdapter.onNoteClickListener listener) {
+    public NoteHolder(@NonNull View itemView, NotesAdapter.onNoteClickListener listener, PopupMenuItemClickListener popupMenuListener) {
         super(itemView);
         title = itemView.findViewById(R.id.note_title);
         description = itemView.findViewById(R.id.note_description);
@@ -33,6 +35,7 @@ public class NoteHolder extends RecyclerView.ViewHolder implements PopupMenu.OnM
         itemMenu.setOnClickListener(v -> popupMenu.show());
 
         popupMenu.setOnMenuItemClickListener(this);
+        this.popupListener = popupMenuListener;
 
     }
 
@@ -47,10 +50,11 @@ public class NoteHolder extends RecyclerView.ViewHolder implements PopupMenu.OnM
     public boolean onMenuItemClick(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.context_delete:
-                //TODO
+                popupListener.click(R.id.context_delete, note, getAdapterPosition());
                 return true;
+
             case R.id.context_modify:
-                //TODO
+                popupListener.click(R.id.context_modify, note, getAdapterPosition());
                 return true;
             default:
                 return false;
