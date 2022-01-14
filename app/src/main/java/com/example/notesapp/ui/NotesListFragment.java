@@ -113,6 +113,7 @@ public class NotesListFragment extends Fragment implements NotesAdapter.onNoteCl
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         requireActivity().getMenuInflater().inflate(R.menu.main, menu);
+        requireActivity().getMenuInflater().inflate(R.menu.dialog, menu);
         super.onCreateOptionsMenu(menu, inflater);
 
     }
@@ -127,6 +128,9 @@ public class NotesListFragment extends Fragment implements NotesAdapter.onNoteCl
                         .replace(R.id.fragment_container, new EditNoteFragment())
                         .addToBackStack(null)
                         .commit();
+                return true;
+            case R.id.dialog_create:
+                NotesDialog.getInstance(null).show(requireActivity().getSupportFragmentManager(), NotesDialog.NOTE);
                 return true;
         }
         return super.onOptionsItemSelected(item);
