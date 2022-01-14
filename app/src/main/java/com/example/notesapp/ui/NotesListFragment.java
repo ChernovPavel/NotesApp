@@ -147,6 +147,10 @@ public class NotesListFragment extends Fragment implements NotesAdapter.onNoteCl
             case R.id.context_delete:
                 repository.delete(note.getId());
                 adapter.delete(repository.getAll(), position);
+                return;
+            case R.id.context_modify:
+                NotesDialog.getInstance(note).show(requireActivity().getSupportFragmentManager(), NotesDialog.NOTE);
+                return;
         }
     }
 }
