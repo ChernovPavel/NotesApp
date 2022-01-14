@@ -56,15 +56,15 @@ public class NotesDialog extends DialogFragment {
 
         if (note == null) {
             buttonText = "Create";
-            builder.setTitle("Create a city");
+            builder.setTitle("Create note");
         } else {
             buttonText = "Modify";
-            builder.setTitle("Modify a city");
+            builder.setTitle("Modify note");
         }
         builder
                 .setView(dialog)
                 .setCancelable(true)
-                .setNegativeButton("Cansel", (dialogInterface, i) -> dialogInterface.cancel())
+                .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.cancel())
                 .setPositiveButton(buttonText, (dialogInterface, i) -> {
                     if (note == null) {
                         controller.createNoteFromDialog(
