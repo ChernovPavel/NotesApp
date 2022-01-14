@@ -29,9 +29,9 @@ public class NotesListFragment extends Fragment implements NotesAdapter.onNoteCl
     private final Repo repository = InMemoryRepoImpl.getInstance();
     private RecyclerView recyclerView;
 
-    private static NotesAdapter adapter;
+    private NotesAdapter adapter;
 
-    public static NotesAdapter getAdapter() {
+    NotesAdapter getAdapter() {
         return adapter;
     }
 
@@ -150,7 +150,6 @@ public class NotesListFragment extends Fragment implements NotesAdapter.onNoteCl
                 return;
             case R.id.context_modify:
                 NotesDialog.getInstance(note).show(requireActivity().getSupportFragmentManager(), NotesDialog.NOTE);
-                return;
         }
     }
 }

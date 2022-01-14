@@ -14,11 +14,13 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements EditNoteFragment.Controller, NotesDialog.NoteDialogController {
 
     private final Repo repository = InMemoryRepoImpl.getInstance();
     private BottomNavigationView bottomNavigationView;
+    private NotesListFragment notesListFragment;
 
     public BottomNavigationView getNavBar() {
         return bottomNavigationView;
@@ -56,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements EditNoteFragment.
         NotesListFragment notesListFragment = new NotesListFragment();
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_container, notesListFragment)
+                .replace(R.id.fragment_container, notesListFragment, "notesListFragment")
                 .commit();
     }
 
@@ -71,15 +73,20 @@ public class MainActivity extends AppCompatActivity implements EditNoteFragment.
 
     @Override
     public void createNoteFromDialog(String title, String description) {
-        String date = new SimpleDateFormat("d.M.yyyy").format(Calendar.getInstance().getTime());
-
+        String date = new SimpleDateFormat("d.M.yyyy", Locale.ENGLISH).format(Calendar.getInstance().getTime());
         repository.create(new Note(title, description, Note.NoteImportance.MEDIUM, date));
-        NotesListFragment.getAdapter().setNotes(repository.getAll());
+
+        notesListFragment = (NotesListFragment) getSupportFragmentManager().findFragmentByTag("notesListFragment");
+        if (notesListFragment != null) {
+            notesListFragment.getAdapter().setNotes(repository.getAll());
+        }
     }
 
     @Override
     public void updateNoteFromDialog(Note note) {
         repository.update(note);
-        NotesListFragment.getAdapter().setNotes(repository.getAll());
+        if (notesListFragment != null) {
+            notesListFragment.getAdapter().setNotes(repository.getAll());
+        }
     }
 }
