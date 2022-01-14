@@ -28,7 +28,12 @@ public class NotesListFragment extends Fragment implements NotesAdapter.onNoteCl
 
     private final Repo repository = InMemoryRepoImpl.getInstance();
     private RecyclerView recyclerView;
-    private NotesAdapter adapter;
+
+    private static NotesAdapter adapter;
+
+    public static NotesAdapter getAdapter() {
+        return adapter;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

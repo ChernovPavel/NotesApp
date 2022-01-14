@@ -67,14 +67,14 @@ public class NotesDialog extends DialogFragment {
                 .setNegativeButton("Cansel", (dialogInterface, i) -> dialogInterface.cancel())
                 .setPositiveButton(buttonText, (dialogInterface, i) -> {
                     if (note == null) {
-                        controller.create(
+                        controller.createNoteFromDialog(
                                 dialogTitle.getEditText().getText().toString(),
                                 dialogDescription.getEditText().getText().toString()
                         );
                     } else {
                         note.setTitle(dialogTitle.getEditText().getText().toString());
                         note.setDescription(dialogDescription.getEditText().getText().toString());
-                        controller.update(note);
+                        controller.updateNoteFromDialog(note);
                     }
                     dialogInterface.dismiss();
                 })
@@ -89,9 +89,9 @@ public class NotesDialog extends DialogFragment {
     }
 
     interface NoteDialogController {
-        void create(String title, String description);
+        void createNoteFromDialog(String title, String description);
 
-        void update(Note note);
+        void updateNoteFromDialog(Note note);
 
     }
 }

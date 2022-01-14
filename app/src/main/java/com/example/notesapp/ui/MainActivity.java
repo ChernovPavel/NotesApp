@@ -7,10 +7,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.notesapp.R;
+import com.example.notesapp.data.InMemoryRepoImpl;
+import com.example.notesapp.data.Note;
+import com.example.notesapp.data.Repo;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MainActivity extends AppCompatActivity implements EditNoteFragment.Controller {
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
+public class MainActivity extends AppCompatActivity implements EditNoteFragment.Controller, NotesDialog.NoteDialogController {
+
+    private final Repo repository = InMemoryRepoImpl.getInstance();
     private BottomNavigationView bottomNavigationView;
 
     public BottomNavigationView getNavBar() {
@@ -60,5 +67,19 @@ public class MainActivity extends AppCompatActivity implements EditNoteFragment.
                 .beginTransaction()
                 .replace(R.id.fragment_container, notesListFragment)
                 .commit();
+    }
+
+    @Override
+    public void createNoteFromDialog(String title, String description) {
+        String date = new SimpleDateFormat("d.M.yyyy").format(Calendar.getInstance().getTime());
+
+        repository.create(new Note(title, description, Note.NoteImportance.MEDIUM, date));
+        NotesListFragment.getAdapter().setNotes(repository.getAll());
+    }
+
+    @Override
+    public void updateNoteFromDialog(Note note) {
+        repository.update(note);
+        NotesListFragment.getAdapter().setNotes(repository.getAll());
     }
 }
