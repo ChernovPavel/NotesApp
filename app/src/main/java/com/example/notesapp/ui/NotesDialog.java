@@ -38,19 +38,23 @@ public class NotesDialog extends DialogFragment {
         String title = "";
         String description = "";
 
+        //если это изменение заметки (название и описание уже есть) то присваиваем их переменным
         if (note != null) {
             title = note.getTitle();
             description = note.getDescription();
         }
 
+        //создаем диалог чтобы в нем найти поля (см ниже)
         View dialog = LayoutInflater.from(getContext()).inflate(R.layout.notes_dialog, null);
 
+        //находим поля через созданный диалог
         TextInputLayout dialogTitle = dialog.findViewById(R.id.dialog_title);
         TextInputLayout dialogDescription = dialog.findViewById(R.id.dialog_description);
 
         dialogTitle.getEditText().setText(title);
         dialogDescription.getEditText().setText(description);
 
+        //создаем билдер через который будем конструировать диалог
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         String buttonText;
 
@@ -61,11 +65,14 @@ public class NotesDialog extends DialogFragment {
             buttonText = "Modify";
             builder.setTitle("Modify note");
         }
+
+        //добавляем в билдер тайтл и кнопки
         builder
                 .setView(dialog)
                 .setCancelable(true)
                 .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.cancel())
                 .setPositiveButton(buttonText, (dialogInterface, i) -> {
+                    // устанавливаем слушателей - controller. Логика createNoteFromDialog / updateNoteFromDialog будет реализована в активити
                     if (note == null) {
                         controller.createNoteFromDialog(
                                 dialogTitle.getEditText().getText().toString(),
@@ -82,12 +89,17 @@ public class NotesDialog extends DialogFragment {
         return builder.create();
     }
 
+    /*
+    инициализируем переменную controller контекстом, коим является наша активити, потому что она имплементит
+    интерфейс NoteDialogController
+    */
     @Override
     public void onAttach(@NonNull Context context) {
         this.controller = (NoteDialogController) context;
         super.onAttach(context);
     }
 
+    // интерфейс который имплементит активити и делает что-то при создании заметки из диалога или ее изменении
     interface NoteDialogController {
         void createNoteFromDialog(String title, String description);
 

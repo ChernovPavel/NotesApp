@@ -33,6 +33,8 @@ public class MainActivity extends AppCompatActivity implements EditNoteFragment.
         setContentView(R.layout.activity_notes_list);
 
         bottomNavigationView = findViewById(R.id.main_bottom_navigation);
+
+        // выбор фрагмента по нажатию на нижнее навигационное меню
         bottomNavigationView.setOnItemSelectedListener(item -> {
 
             Fragment fragment;
@@ -62,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements EditNoteFragment.
                 .commit();
     }
 
+    //отобразить фрагмент со списком заметок при нажатии кнопки сохранить во фрагменте изменения заметки
     @Override
     public void saveButtonPressed() {
         NotesListFragment notesListFragment = new NotesListFragment();
@@ -71,17 +74,20 @@ public class MainActivity extends AppCompatActivity implements EditNoteFragment.
                 .commit();
     }
 
+    //создание заметки когда в диалоге-фрагменте нажали сохранить
     @Override
     public void createNoteFromDialog(String title, String description) {
         String date = new SimpleDateFormat("d.M.yyyy", Locale.ENGLISH).format(Calendar.getInstance().getTime());
         repository.create(new Note(title, description, Note.NoteImportance.MEDIUM, date));
 
+        //получаем фрагмент и из него вызываем getAdapter() чтобы обновить список заметок и уведомить всех подписчиков
         notesListFragment = (NotesListFragment) getSupportFragmentManager().findFragmentByTag("notesListFragment");
         if (notesListFragment != null) {
             notesListFragment.getAdapter().setNotes(repository.getAll());
         }
     }
 
+    //аналогично методу выше только это про изменение заметки
     @Override
     public void updateNoteFromDialog(Note note) {
         repository.update(note);

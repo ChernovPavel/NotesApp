@@ -47,6 +47,7 @@ public class EditNoteFragment extends Fragment implements DatePickerFragment.OnC
         return fragment;
     }
 
+    //скрывание клавиатуры
     public static void hideSoftKeyboard(Activity activity) {
         if (activity.getCurrentFocus() == null) {
             return;
@@ -62,6 +63,7 @@ public class EditNoteFragment extends Fragment implements DatePickerFragment.OnC
 
     @Override
     public void onAttach(@NonNull Context context) {
+        //проверяем что активити инмплементит интерфейс Controller. Который является коллбеком для нажатия кнопки "сохранить" в этом фрагменте
         if (context instanceof Controller) {
             this.controller = (Controller) context;
         } else {
@@ -70,6 +72,7 @@ public class EditNoteFragment extends Fragment implements DatePickerFragment.OnC
         super.onAttach(context);
     }
 
+    //снова показывать нижнее меню когда этот фрагмент закроется. Потому что при открытии этого фрагмента нижнее меню скрываем
     @Override
     public void onStop() {
         ((MainActivity) requireActivity()).getNavBar().setVisibility(View.VISIBLE);
@@ -79,9 +82,12 @@ public class EditNoteFragment extends Fragment implements DatePickerFragment.OnC
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        //скрываем нижнее меню при открытии этого фрагмента (потому что оно не нужно)
         if (getActivity() != null && getActivity() instanceof MainActivity) {
             ((MainActivity) requireActivity()).getNavBar().setVisibility(View.GONE);
         }
+
         return inflater.inflate(R.layout.fragment_edit_note, container, false);
     }
 
@@ -96,6 +102,7 @@ public class EditNoteFragment extends Fragment implements DatePickerFragment.OnC
         spinner = view.findViewById(R.id.fragment_edit_note_spinner);
         tvDate = view.findViewById(R.id.date_text);
 
+        //стандартное добавление спинера на фрагмент
         ArrayAdapter<?> adapter = ArrayAdapter.createFromResource(requireContext(), R.array.notes_importance, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
@@ -135,9 +142,11 @@ public class EditNoteFragment extends Fragment implements DatePickerFragment.OnC
                     .remove(this)
                     .commit();
 
+            // вызвваем коллбэк
             controller.saveButtonPressed();
         });
 
+        //слушатель выбора элемента на спиннере
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {

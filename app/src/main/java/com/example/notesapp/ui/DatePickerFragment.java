@@ -27,6 +27,7 @@ public class DatePickerFragment extends Fragment {
     private String date;
     private OnConfirmDateBtnClickListener listener;
 
+    //метод который проверяет что фрагмент из которого открылся данный дочерний фрагмент реализует интерфейс
     public void onAttachToParentFragment(Fragment fragment) {
         try {
             listener = (OnConfirmDateBtnClickListener) fragment;
@@ -40,6 +41,8 @@ public class DatePickerFragment extends Fragment {
     @Override
     public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //вызываем созданный выше метод
         onAttachToParentFragment(getParentFragment());
     }
 
@@ -67,6 +70,7 @@ public class DatePickerFragment extends Fragment {
         });
     }
 
+    //коллбэк который имплементит EditNoteFragment чтобы там релизовать логику при подтверждении даты в этом врагменте датапикера
     interface OnConfirmDateBtnClickListener {
         void confirmDateBtnPressed(String date);
     }

@@ -31,6 +31,7 @@ public class NotesListFragment extends Fragment implements NotesAdapter.onNoteCl
 
     private NotesAdapter adapter;
 
+    // метод который нужен чтобы использовать адаптер в главной активити и через объект адаптера вызвать setNotes()
     NotesAdapter getAdapter() {
         return adapter;
     }
@@ -63,6 +64,7 @@ public class NotesListFragment extends Fragment implements NotesAdapter.onNoteCl
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setAdapter(adapter);
 
+        // реализация удаления элемента путем свайпа влево или вправо на нем
         ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.Callback() {
             @Override
             public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
@@ -106,8 +108,15 @@ public class NotesListFragment extends Fragment implements NotesAdapter.onNoteCl
         repository.create(new Note("Title 16", "Description 16", Note.NoteImportance.MEDIUM, "30.2.2019"));
     }
 
+    /*
+        Этот фрагмент реализует интерфейс и является слушателем клика по холдеру.
+        А так как интерфейс создан в классе адаптера, то адаптер получает объект слушателя и передает его
+        в конструктор холдера и холдер уже при нажатии на элемент вызывает коллбек тут (во фрагменте)
+        и фрагмент решает что делать по этому клику
+    */
     @Override
     public void onNoteClick(Note note) {
+        // запустить фрагмент изменения заметки
         requireActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, EditNoteFragment.getInstance(note))
@@ -117,16 +126,19 @@ public class NotesListFragment extends Fragment implements NotesAdapter.onNoteCl
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        //создание элемента "плюс" для создания элемента во фрагементе
         requireActivity().getMenuInflater().inflate(R.menu.main, menu);
+
+        //создание элемента "бланк плюс" для создания элемента в диалоговом фрагменте
         requireActivity().getMenuInflater().inflate(R.menu.dialog, menu);
         super.onCreateOptionsMenu(menu, inflater);
-
     }
 
     @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
+            // выбрали создание заметки через открытие дочернего фрагемента
             case R.id.main_create:
                 requireActivity().getSupportFragmentManager()
                         .beginTransaction()
@@ -134,6 +146,8 @@ public class NotesListFragment extends Fragment implements NotesAdapter.onNoteCl
                         .addToBackStack(null)
                         .commit();
                 return true;
+
+            // выбрали создание заметки через открытие диалога-фрагмента
             case R.id.dialog_create:
                 NotesDialog.getInstance(null).show(requireActivity().getSupportFragmentManager(), NotesDialog.NOTE);
                 return true;
@@ -144,10 +158,14 @@ public class NotesListFragment extends Fragment implements NotesAdapter.onNoteCl
     @Override
     public void click(int command, Note note, int position) {
         switch (command) {
+            // реализация слушателя при нажатии на пункты контекстного меню на каждом элементе
             case R.id.context_delete:
                 repository.delete(note.getId());
+
+                // говорим адаптеру чтобы он удалил заметку из массива и оповестил всех наблюдателей что элемент удален
                 adapter.delete(repository.getAll(), position);
                 return;
+
             case R.id.context_modify:
                 NotesDialog.getInstance(note).show(requireActivity().getSupportFragmentManager(), NotesDialog.NOTE);
         }
