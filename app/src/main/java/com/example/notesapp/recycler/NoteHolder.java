@@ -27,13 +27,17 @@ public class NoteHolder extends RecyclerView.ViewHolder implements PopupMenu.OnM
         title = itemView.findViewById(R.id.note_title);
         description = itemView.findViewById(R.id.note_description);
         itemMenu = itemView.findViewById(R.id.item_menu);
+
+        //устанавливаем слушателя клика по заметке
         itemView.setOnClickListener(view -> listener.onNoteClick(note));
 
+        //создаем попап меню. Где itemMenu это элемент при клике на который будет открываться попап меню
         popupMenu = new PopupMenu(itemView.getContext(), itemMenu);
         popupMenu.inflate(R.menu.context);
 
         itemMenu.setOnClickListener(v -> popupMenu.show());
 
+        //холдер будет слушателем в этом методе нажатия на попап меню
         popupMenu.setOnMenuItemClickListener(this);
         this.popupListener = popupMenuListener;
 
@@ -46,6 +50,7 @@ public class NoteHolder extends RecyclerView.ViewHolder implements PopupMenu.OnM
 
     }
 
+    //метод который нужно описать чтобы заимлементить интерфейс OnMenuItemClickListener
     @Override
     public boolean onMenuItemClick(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
