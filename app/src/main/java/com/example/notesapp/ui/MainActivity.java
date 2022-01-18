@@ -93,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements EditNoteFragment.
     @Override
     public void updateNoteFromDialog(Note note) {
         repository.update(note);
+        notesListFragment = (NotesListFragment) getSupportFragmentManager().findFragmentByTag("notesListFragment");
         if (notesListFragment != null) {
             notesListFragment.getAdapter().setNotes(repository.getAll());
         }
