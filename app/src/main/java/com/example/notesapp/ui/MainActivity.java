@@ -2,8 +2,10 @@ package com.example.notesapp.ui;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.example.notesapp.R;
@@ -94,5 +96,21 @@ public class MainActivity extends AppCompatActivity implements EditNoteFragment.
         if (notesListFragment != null) {
             notesListFragment.getAdapter().setNotes(repository.getAll());
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            DialogFragment dialogFragment = new AppExitFragment();
+            dialogFragment.show(getSupportFragmentManager(), AppExitFragment.TAG);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    protected void onUserLeaveHint() {
+        Toast.makeText(this, "Приложение закрыто", Toast.LENGTH_SHORT).show();
+        super.onUserLeaveHint();
     }
 }
