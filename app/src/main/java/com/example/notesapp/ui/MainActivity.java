@@ -2,6 +2,7 @@ package com.example.notesapp.ui;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -94,5 +95,10 @@ public class MainActivity extends AppCompatActivity implements EditNoteFragment.
         if (notesListFragment != null) {
             notesListFragment.getAdapter().setNotes(repository.getAll());
         }
+    }
+
+    //метод используется в CancelDialogFragment для передачи текста в активити
+    public void onDialogResult(String text) {
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
 }

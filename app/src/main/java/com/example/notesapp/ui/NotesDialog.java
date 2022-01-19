@@ -70,7 +70,12 @@ public class NotesDialog extends DialogFragment {
         builder
                 .setView(dialog)
                 .setCancelable(true)
-                .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.cancel())
+                .setNegativeButton("Cancel", (dialogInterface, i) -> {
+
+                    //открыть кастомный диалог-фр при нажатии Cancel
+                    new CancelDialogFragment().show(requireActivity().getSupportFragmentManager(), CancelDialogFragment.TAG);
+                    dialogInterface.cancel();
+                })
                 .setPositiveButton(buttonText, (dialogInterface, i) -> {
                     // устанавливаем слушателей - controller. Логика createNoteFromDialog / updateNoteFromDialog будет реализована в активити
                     if (note == null) {

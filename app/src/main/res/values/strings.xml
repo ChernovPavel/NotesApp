@@ -13,6 +13,7 @@
     <string name="context_menu_delete">Delete</string>
     <string name="context_menu_modify">Modify</string>
     <string name="create_note_dialog">create_note</string>
+    <string name="dialog_cancel_reason">Укажите причину закрытия</string>
 
     <string-array name="notes_importance">
         <item>Высокая</item>
