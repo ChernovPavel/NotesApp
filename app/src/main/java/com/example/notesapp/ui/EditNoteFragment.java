@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -87,6 +90,9 @@ public class EditNoteFragment extends Fragment implements DatePickerFragment.OnC
         if (getActivity() != null && getActivity() instanceof MainActivity) {
             ((MainActivity) requireActivity()).getNavBar().setVisibility(View.GONE);
         }
+
+        //чтобы фрагмент имел доступ к настройкам главного меню (для скрывания ненужных кнопок)
+        setHasOptionsMenu(true);
 
         return inflater.inflate(R.layout.fragment_edit_note, container, false);
     }
@@ -176,6 +182,17 @@ public class EditNoteFragment extends Fragment implements DatePickerFragment.OnC
             }
             hideSoftKeyboard(requireActivity());
         });
+    }
+
+    //скрывать кнопки создания заметки в меню
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        MenuItem item = menu.findItem(R.id.main_create);
+        if (item != null) {
+            item.setVisible(false);
+            menu.findItem(R.id.dialog_create).setVisible(false);
+        }
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     interface Controller {
