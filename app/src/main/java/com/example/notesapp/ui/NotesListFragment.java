@@ -128,9 +128,6 @@ public class NotesListFragment extends Fragment implements NotesAdapter.onNoteCl
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         //создание элемента "плюс" для создания элемента во фрагементе
         requireActivity().getMenuInflater().inflate(R.menu.main, menu);
-
-        //создание элемента "бланк плюс" для создания элемента в диалоговом фрагменте
-        requireActivity().getMenuInflater().inflate(R.menu.dialog, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
