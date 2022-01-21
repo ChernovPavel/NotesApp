@@ -1,11 +1,7 @@
 package com.example.notesapp.ui;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -122,34 +118,6 @@ public class NotesListFragment extends Fragment implements NotesAdapter.onNoteCl
                 .replace(R.id.fragment_container, EditNoteFragment.getInstance(note))
                 .addToBackStack(null)
                 .commit();
-    }
-
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        //создание элемента "плюс" для создания элемента во фрагементе
-        requireActivity().getMenuInflater().inflate(R.menu.main, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @SuppressLint("NonConstantResourceId")
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            // выбрали создание заметки через открытие дочернего фрагемента
-            case R.id.main_create:
-                requireActivity().getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragment_container, new EditNoteFragment())
-                        .addToBackStack(null)
-                        .commit();
-                return true;
-
-            // выбрали создание заметки через открытие диалога-фрагмента
-            case R.id.dialog_create:
-                NotesDialog.getInstance(null).show(requireActivity().getSupportFragmentManager(), NotesDialog.NOTE);
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

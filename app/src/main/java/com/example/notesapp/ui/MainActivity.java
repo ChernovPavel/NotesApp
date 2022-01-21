@@ -2,8 +2,11 @@ package com.example.notesapp.ui;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
@@ -113,5 +116,31 @@ public class MainActivity extends AppCompatActivity implements EditNoteFragment.
     protected void onUserLeaveHint() {
         Toast.makeText(this, "Приложение закрыто", Toast.LENGTH_SHORT).show();
         super.onUserLeaveHint();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            // выбрали создание заметки через открытие дочернего фрагемента
+            case R.id.main_create:
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, new EditNoteFragment())
+                        .addToBackStack(null)
+                        .commit();
+                return true;
+
+            // выбрали создание заметки через открытие диалога-фрагмента
+            case R.id.dialog_create:
+                NotesDialog.getInstance(null).show(getSupportFragmentManager(), NotesDialog.NOTE);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
