@@ -7,8 +7,10 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
@@ -17,6 +19,7 @@ import com.example.notesapp.data.InMemoryRepoImpl;
 import com.example.notesapp.data.Note;
 import com.example.notesapp.data.Repo;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -38,8 +41,7 @@ public class MainActivity extends AppCompatActivity implements EditNoteFragment.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notes_list);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        initToolbarAndDrawer();
 
         bottomNavigationView = findViewById(R.id.main_bottom_navigation);
 
@@ -71,6 +73,38 @@ public class MainActivity extends AppCompatActivity implements EditNoteFragment.
                 .beginTransaction()
                 .replace(R.id.fragment_container, notesListFragment, "notesListFragment")
                 .commit();
+    }
+
+    private void initToolbarAndDrawer() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        initDrawer(toolbar);
+    }
+
+    private void initDrawer(Toolbar toolbar) {
+        final DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar,
+                R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = findViewById(R.id.navigation_view);
+        navigationView.setNavigationItemSelectedListener(item -> {
+            int id = item.getItemId();
+            switch (id) {
+                case R.id.action_drawer_about:
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .addToBackStack("")
+                            .replace(R.id.fragment_container, new AboutFragment())
+                            .commit();
+                    drawer.closeDrawers();
+                    return true;
+            }
+            return false;
+        });
     }
 
     //отобразить фрагмент со списком заметок при нажатии кнопки сохранить во фрагменте изменения заметки
