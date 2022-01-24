@@ -7,4 +7,10 @@
         android:title="@string/add_note"
         app:showAsAction="always" />
 
+    <item
+        android:id="@+id/dialog.create"
+        android:icon="@drawable/ic_baseline_note_add_24"
+        android:title="@string/create_note_dialog"
+        app:showAsAction="ifRoom" />
+
 </menu>
