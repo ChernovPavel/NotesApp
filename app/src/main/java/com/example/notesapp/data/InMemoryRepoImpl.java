@@ -1,12 +1,11 @@
 package com.example.notesapp.data;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class InMemoryRepoImpl implements Repo {
 
     private static InMemoryRepoImpl repo;
-    private final ArrayList<Note> notes = new ArrayList<>();
+    private ArrayList<Note> notes = new ArrayList<>();
     private int counter = 0;
 
     private InMemoryRepoImpl() {
@@ -58,7 +57,12 @@ public class InMemoryRepoImpl implements Repo {
     }
 
     @Override
-    public List<Note> getAll() {
+    public ArrayList<Note> getAll() {
         return notes;
+    }
+
+    @Override
+    public void fill(ArrayList<Note> notes) {
+        this.notes = notes;
     }
 }

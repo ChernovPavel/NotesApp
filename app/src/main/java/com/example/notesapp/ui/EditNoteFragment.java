@@ -2,6 +2,7 @@ package com.example.notesapp.ui;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,6 +27,7 @@ import com.example.notesapp.R;
 import com.example.notesapp.data.InMemoryRepoImpl;
 import com.example.notesapp.data.Note;
 import com.example.notesapp.data.Repo;
+import com.google.gson.GsonBuilder;
 
 public class EditNoteFragment extends Fragment implements DatePickerFragment.OnConfirmDateBtnClickListener {
 
@@ -41,6 +43,9 @@ public class EditNoteFragment extends Fragment implements DatePickerFragment.OnC
     private int id = -1;
     private Note note = null;
     private Controller controller;
+
+    public static final String KEY = "KEY";
+    private SharedPreferences prefs = null;
 
     public static EditNoteFragment getInstance(Note note) {
         EditNoteFragment fragment = new EditNoteFragment();
@@ -107,6 +112,7 @@ public class EditNoteFragment extends Fragment implements DatePickerFragment.OnC
         saveNote = view.findViewById(R.id.edit_note_update);
         spinner = view.findViewById(R.id.fragment_edit_note_spinner);
         tvDate = view.findViewById(R.id.date_text);
+        prefs = getActivity().getPreferences(Context.MODE_PRIVATE);
 
         //стандартное добавление спинера на фрагмент
         ArrayAdapter<?> adapter = ArrayAdapter.createFromResource(requireContext(), R.array.notes_importance, android.R.layout.simple_spinner_item);
@@ -131,16 +137,23 @@ public class EditNoteFragment extends Fragment implements DatePickerFragment.OnC
                                         title.getText().toString(),
                                         description.getText().toString(),
                                         Note.NoteImportance.values()[choiceImportance],
-                                tvDate.getText().toString()
+                                        tvDate.getText().toString()
                                 )
                         );
                 note = repository.read(newNoteId);
+
+                String jsonNotes = new GsonBuilder().create().toJson(repository.getAll());
+                prefs.edit().putString(KEY, jsonNotes).apply();
+
             } else {
                 note.setTitle(title.getText().toString());
                 note.setDescription(description.getText().toString());
                 note.setImportance(Note.NoteImportance.values()[choiceImportance]);
                 note.setDate(tvDate.getText().toString());
                 repository.update(note);
+
+                String jsonNotes = new GsonBuilder().create().toJson(repository.getAll());
+                prefs.edit().putString(KEY, jsonNotes).apply();
             }
 
             requireActivity().getSupportFragmentManager()
