@@ -165,6 +165,7 @@ public class EditNoteFragment extends Fragment implements DatePickerFragment.OnC
 
             // вызвваем коллбэк
             controller.saveButtonPressed();
+            hideSoftKeyboard(requireActivity());
         });
 
         //слушатель выбора элемента на спиннере
