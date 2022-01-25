@@ -1,6 +1,8 @@
 package com.example.notesapp.ui;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,6 +22,7 @@ import com.example.notesapp.data.Note;
 import com.example.notesapp.data.Repo;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.GsonBuilder;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -27,9 +30,12 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements EditNoteFragment.Controller, NotesDialog.NoteDialogController {
 
+    public static final String KEY = "KEY";
     private final Repo repository = InMemoryRepoImpl.getInstance();
     private BottomNavigationView bottomNavigationView;
     private NotesListFragment notesListFragment;
+    private static final String ID_NOTE = "ID_NOTE";
+    private SharedPreferences prefs = null;
 
     public BottomNavigationView getNavBar() {
         return bottomNavigationView;
@@ -110,7 +116,8 @@ public class MainActivity extends AppCompatActivity implements EditNoteFragment.
     //отобразить фрагмент со списком заметок при нажатии кнопки сохранить во фрагменте изменения заметки
     @Override
     public void saveButtonPressed() {
-        NotesListFragment notesListFragment = new NotesListFragment();
+        NotesListFragment notesListFragment = (NotesListFragment) getSupportFragmentManager()
+                .findFragmentByTag("notesListFragment");
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, notesListFragment)
@@ -128,6 +135,11 @@ public class MainActivity extends AppCompatActivity implements EditNoteFragment.
         if (notesListFragment != null) {
             notesListFragment.getAdapter().setNotes(repository.getAll());
         }
+        prefs = getPreferences(Context.MODE_PRIVATE);
+
+        String jsonNotes = new GsonBuilder().create().toJson(repository.getAll());
+        prefs.edit().putString(KEY, jsonNotes).apply();
+        prefs.edit().putInt(ID_NOTE, repository.getCounter()).apply();
     }
 
     //аналогично методу выше только это про изменение заметки
@@ -138,6 +150,10 @@ public class MainActivity extends AppCompatActivity implements EditNoteFragment.
         if (notesListFragment != null) {
             notesListFragment.getAdapter().setNotes(repository.getAll());
         }
+        prefs = getPreferences(Context.MODE_PRIVATE);
+
+        String jsonNotes = new GsonBuilder().create().toJson(repository.getAll());
+        prefs.edit().putString(KEY, jsonNotes).apply();
     }
 
     @Override

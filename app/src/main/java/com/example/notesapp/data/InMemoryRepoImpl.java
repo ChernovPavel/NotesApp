@@ -56,6 +56,17 @@ public class InMemoryRepoImpl implements Repo {
         }
     }
 
+    //метод нужен чтобы получать каунтер из префов (иначе id заметок будут дублироваться после перезагрузки аппа)
+    @Override
+    public int getCounter() {
+        return counter;
+    }
+
+    //аналогично предыдущему. только чтобы получать каунтер из префов
+    public void setCounter(int counter) {
+        this.counter = counter;
+    }
+
     @Override
     public ArrayList<Note> getAll() {
         return notes;

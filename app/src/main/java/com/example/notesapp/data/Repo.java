@@ -14,5 +14,9 @@ public interface Repo {
 
     void fill(ArrayList<Note> notes);
 
+    int getCounter();
+
+    void setCounter(int counter);
+
     ArrayList<Note> getAll();
 }

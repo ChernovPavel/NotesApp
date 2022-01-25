@@ -45,6 +45,7 @@ public class EditNoteFragment extends Fragment implements DatePickerFragment.OnC
     private Controller controller;
 
     public static final String KEY = "KEY";
+    private static final String ID_NOTE = "ID_NOTE";
     private SharedPreferences prefs = null;
 
     public static EditNoteFragment getInstance(Note note) {
@@ -144,6 +145,7 @@ public class EditNoteFragment extends Fragment implements DatePickerFragment.OnC
 
                 String jsonNotes = new GsonBuilder().create().toJson(repository.getAll());
                 prefs.edit().putString(KEY, jsonNotes).apply();
+                prefs.edit().putInt(ID_NOTE, repository.getCounter()).apply();
 
             } else {
                 note.setTitle(title.getText().toString());

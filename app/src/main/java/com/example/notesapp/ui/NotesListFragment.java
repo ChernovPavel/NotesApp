@@ -33,6 +33,7 @@ import java.util.ArrayList;
 public class NotesListFragment extends Fragment implements NotesAdapter.onNoteClickListener, PopupMenuItemClickListener {
 
     public static final String KEY = "KEY";
+    private static final String ID_NOTE = "ID_NOTE";
     public static ArrayList<Note> notesList = new ArrayList<>();
     private final Repo repository = InMemoryRepoImpl.getInstance();
     private NotesAdapter adapter;
@@ -70,11 +71,20 @@ public class NotesListFragment extends Fragment implements NotesAdapter.onNoteCl
 
         prefs = getActivity().getPreferences(Context.MODE_PRIVATE);
 
+        //получаем строку со всеми заметками из префов
         String savedNotes = prefs.getString(KEY, null);
+
+        //получаем каунтер из префов и устанавливаем его в репозиторий. Иначе при закрытии аппа каунтер
+        //обнулится и id заметок будут повторяться
+        int counterFromPrefs = prefs.getInt(ID_NOTE, 0);
+        repository.setCounter(counterFromPrefs);
+
         if (savedNotes == null || savedNotes.isEmpty()) {
             Toast.makeText(getContext(), "Пустой список", Toast.LENGTH_SHORT).show();
         } else {
             try {
+
+                //приводим строку к листу объектов заметок
                 Type type = new TypeToken<ArrayList<Note>>() {
                 }.getType();
 
@@ -106,6 +116,11 @@ public class NotesListFragment extends Fragment implements NotesAdapter.onNoteCl
                 Note note = holder.getNote();
                 repository.delete(note.getId());
                 adapter.delete(repository.getAll(), position);
+
+                //переводим в json-сторку все заметки и сохраняем их в префы
+                String jsonNotes = new GsonBuilder().create().toJson(repository.getAll());
+                prefs.edit().putString(KEY, jsonNotes).apply();
+
             }
         });
         helper.attachToRecyclerView(recyclerView);
@@ -137,6 +152,9 @@ public class NotesListFragment extends Fragment implements NotesAdapter.onNoteCl
 
                 // говорим адаптеру чтобы он удалил заметку из массива и оповестил всех наблюдателей что элемент удален
                 adapter.delete(repository.getAll(), position);
+                //переводим в json-сторку все заметки и сохраняем их в префы
+                String jsonNotes = new GsonBuilder().create().toJson(repository.getAll());
+                prefs.edit().putString(KEY, jsonNotes).apply();
                 return;
 
             case R.id.context_modify:
