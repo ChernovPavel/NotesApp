@@ -1,12 +1,11 @@
 package com.example.notesapp.data;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class InMemoryRepoImpl implements Repo {
 
     private static InMemoryRepoImpl repo;
-    private final ArrayList<Note> notes = new ArrayList<>();
+    private ArrayList<Note> notes = new ArrayList<>();
     private int counter = 0;
 
     private InMemoryRepoImpl() {
@@ -57,8 +56,24 @@ public class InMemoryRepoImpl implements Repo {
         }
     }
 
+    //метод нужен чтобы получать каунтер из префов (иначе id заметок будут дублироваться после перезагрузки аппа)
     @Override
-    public List<Note> getAll() {
+    public int getCounter() {
+        return counter;
+    }
+
+    //аналогично предыдущему. только чтобы получать каунтер из префов
+    public void setCounter(int counter) {
+        this.counter = counter;
+    }
+
+    @Override
+    public ArrayList<Note> getAll() {
         return notes;
+    }
+
+    @Override
+    public void fill(ArrayList<Note> notes) {
+        this.notes = notes;
     }
 }

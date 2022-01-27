@@ -1,9 +1,13 @@
 package com.example.notesapp.ui;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,13 +23,21 @@ import com.example.notesapp.data.PopupMenuItemClickListener;
 import com.example.notesapp.data.Repo;
 import com.example.notesapp.recycler.NoteHolder;
 import com.example.notesapp.recycler.NotesAdapter;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 public class NotesListFragment extends Fragment implements NotesAdapter.onNoteClickListener, PopupMenuItemClickListener {
 
+    public static final String KEY = "KEY";
+    private static final String ID_NOTE = "ID_NOTE";
+    public static ArrayList<Note> notesList = new ArrayList<>();
     private final Repo repository = InMemoryRepoImpl.getInstance();
-    private RecyclerView recyclerView;
-
     private NotesAdapter adapter;
+    private SharedPreferences prefs = null;
 
     // метод который нужен чтобы использовать адаптер в главной активити и через объект адаптера вызвать setNotes()
     NotesAdapter getAdapter() {
@@ -48,17 +60,41 @@ public class NotesListFragment extends Fragment implements NotesAdapter.onNoteCl
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if (repository.getAll().size() == 0) fillRepo();
-
         adapter = new NotesAdapter();
-        adapter.setNotes(repository.getAll());
 
         adapter.setOnNoteClickListener(this);
         adapter.setPopupMenuItemClickListener(this);
 
-        recyclerView = view.findViewById(R.id.rv_list);
+        RecyclerView recyclerView = view.findViewById(R.id.rv_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setAdapter(adapter);
+
+        prefs = getActivity().getPreferences(Context.MODE_PRIVATE);
+
+        //получаем строку со всеми заметками из префов
+        String savedNotes = prefs.getString(KEY, null);
+
+        //получаем каунтер из префов и устанавливаем его в репозиторий. Иначе при закрытии аппа каунтер
+        //обнулится и id заметок будут повторяться
+        int counterFromPrefs = prefs.getInt(ID_NOTE, 0);
+        repository.setCounter(counterFromPrefs);
+
+        if (savedNotes == null || savedNotes.isEmpty()) {
+            Toast.makeText(getContext(), "Пустой список", Toast.LENGTH_SHORT).show();
+        } else {
+            try {
+
+                //приводим строку к листу объектов заметок
+                Type type = new TypeToken<ArrayList<Note>>() {
+                }.getType();
+
+                notesList = new GsonBuilder().create().fromJson(savedNotes, type);
+            } catch (JsonSyntaxException e) {
+                Toast.makeText(getContext(), "Ошибка трансформации", Toast.LENGTH_SHORT).show();
+            }
+        }
+        adapter.setNotes(notesList);
+        if (repository.getAll().isEmpty()) repository.fill(notesList);
 
         // реализация удаления элемента путем свайпа влево или вправо на нем
         ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.Callback() {
@@ -80,28 +116,14 @@ public class NotesListFragment extends Fragment implements NotesAdapter.onNoteCl
                 Note note = holder.getNote();
                 repository.delete(note.getId());
                 adapter.delete(repository.getAll(), position);
+
+                //переводим в json-сторку все заметки и сохраняем их в префы
+                String jsonNotes = new GsonBuilder().create().toJson(repository.getAll());
+                prefs.edit().putString(KEY, jsonNotes).apply();
+
             }
         });
         helper.attachToRecyclerView(recyclerView);
-    }
-
-    private void fillRepo() {
-        repository.create(new Note("Title 1", "Description 1", Note.NoteImportance.LOW, "30.2.2019"));
-        repository.create(new Note("Title 2", "Description 2", Note.NoteImportance.HIGH, "15.5.2022"));
-        repository.create(new Note("Title 3", "Description 3", Note.NoteImportance.MEDIUM, "2.11.2017"));
-        repository.create(new Note("Title 4", "Description 4", Note.NoteImportance.HIGH, "14.2.2015"));
-        repository.create(new Note("Title 5", "Description 5", Note.NoteImportance.MEDIUM, "30.2.2019"));
-        repository.create(new Note("Title 6", "Description 6", Note.NoteImportance.LOW, "15.2.2012"));
-        repository.create(new Note("Title 7", "Description 7", Note.NoteImportance.HIGH, "16.12.2019"));
-        repository.create(new Note("Title 8", "Description 8", Note.NoteImportance.MEDIUM, "30.2.2019"));
-        repository.create(new Note("Title 9", "Description 9", Note.NoteImportance.MEDIUM, "30.11.2000"));
-        repository.create(new Note("Title 10", "Description 10", Note.NoteImportance.MEDIUM, "30.2.2019"));
-        repository.create(new Note("Title 11", "Description 11", Note.NoteImportance.HIGH, "23.1.2011"));
-        repository.create(new Note("Title 12", "Description 12", Note.NoteImportance.HIGH, "6.2.2019"));
-        repository.create(new Note("Title 13", "Description 13", Note.NoteImportance.LOW, "9.4.2019"));
-        repository.create(new Note("Title 14", "Description 14", Note.NoteImportance.MEDIUM, "8.2.2012"));
-        repository.create(new Note("Title 15", "Description 15", Note.NoteImportance.LOW, "30.6.2019"));
-        repository.create(new Note("Title 16", "Description 16", Note.NoteImportance.MEDIUM, "30.2.2019"));
     }
 
     /*
@@ -120,6 +142,7 @@ public class NotesListFragment extends Fragment implements NotesAdapter.onNoteCl
                 .commit();
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void click(int command, Note note, int position) {
         switch (command) {
@@ -129,6 +152,9 @@ public class NotesListFragment extends Fragment implements NotesAdapter.onNoteCl
 
                 // говорим адаптеру чтобы он удалил заметку из массива и оповестил всех наблюдателей что элемент удален
                 adapter.delete(repository.getAll(), position);
+                //переводим в json-сторку все заметки и сохраняем их в префы
+                String jsonNotes = new GsonBuilder().create().toJson(repository.getAll());
+                prefs.edit().putString(KEY, jsonNotes).apply();
                 return;
 
             case R.id.context_modify:

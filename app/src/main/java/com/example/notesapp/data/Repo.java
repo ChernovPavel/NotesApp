@@ -1,6 +1,6 @@
 package com.example.notesapp.data;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public interface Repo {
 
@@ -12,5 +12,11 @@ public interface Repo {
 
     void delete(int id);
 
-    List<Note> getAll();
+    void fill(ArrayList<Note> notes);
+
+    int getCounter();
+
+    void setCounter(int counter);
+
+    ArrayList<Note> getAll();
 }

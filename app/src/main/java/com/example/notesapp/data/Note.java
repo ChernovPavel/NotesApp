@@ -57,8 +57,8 @@ public class Note implements Serializable {
     }
 
     public enum NoteImportance {
-        LOW,
+        HIGH,
         MEDIUM,
-        HIGH
+        LOW
     }
 }

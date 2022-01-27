@@ -13,15 +13,14 @@ import com.example.notesapp.data.Note;
 import com.example.notesapp.data.PopupMenuItemClickListener;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class NotesAdapter extends RecyclerView.Adapter<NoteHolder> {
 
-    private List<Note> notes = new ArrayList<>();
+    private ArrayList<Note> notes = new ArrayList<>();
     private onNoteClickListener listener;
     private PopupMenuItemClickListener popupMenuListener;
 
-    public void setNotes(List<Note> notes) {
+    public void setNotes(ArrayList<Note> notes) {
         this.notes = notes;
         notifyDataSetChanged();
     }
@@ -58,7 +57,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NoteHolder> {
         return notes.size();
     }
 
-    public void delete(List<Note> all, int position) {
+    public void delete(ArrayList<Note> all, int position) {
         this.notes = all;
         notifyItemRemoved(position);
     }
